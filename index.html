@@ -61,10 +61,13 @@ section { padding: 48px 0 0; }
   padding: 36px 0 32px;
 }
 .hero .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.hero img { width: 84px; height: 84px; border-radius: 19px; box-shadow: 0 10px 28px rgba(0,0,0,.3); flex: none; }
+.hero img { width: 120px; height: 120px; border-radius: 27px; box-shadow: 0 10px 28px rgba(0,0,0,.3); flex: none; }
 .hero .intro { flex: 1 1 360px; min-width: 0; }
 .hero h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; margin: 0; }
 .hero .sub { color: rgba(255,255,255,.78); margin: 6px 0 0; font-size: 16px; max-width: 600px; }
+.hero .store { display: inline-block; margin-top: 14px; border-radius: 10px; }
+.hero .store img { display: block; width: 150px; height: auto; border-radius: 0; box-shadow: none; }
+.hero .store:focus-visible { outline: 3px solid #9fd8b4; outline-offset: 3px; }
 .hero nav { display: flex; gap: 8px; flex-wrap: wrap; }
 .hero nav a {
   color: #fff; text-decoration: none; font-weight: 600; font-size: 15px;
@@ -209,6 +212,13 @@ details[open] > summary::after { transform: rotate(45deg); }
 summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 14px; }
 details p { margin: 0; padding: 0 18px 16px; color: var(--muted); font-size: 15px; }
 
+/* Second App Store badge, for visitors who scrolled through the page. */
+.get-app { display: flex; align-items: center; justify-content: center; gap: 12px 20px; flex-wrap: wrap; margin-top: 22px; }
+.get-app p { margin: 0; font-weight: 600; font-size: 18px; }
+.get-app .store { display: block; border-radius: 10px; }
+.get-app .store img { display: block; width: 150px; height: auto; }
+.get-app .store:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
 /* Contact */
 .contact {
   background: var(--mint); border-radius: 16px; padding: 16px 20px; margin-top: 14px;
@@ -228,10 +238,13 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
   section { padding-top: 40px; }
   .hero { padding: 24px 0 22px; }
   .hero .wrap { gap: 14px 16px; }
-  .hero img { width: 60px; height: 60px; border-radius: 14px; }
+  .hero img { width: 72px; height: 72px; border-radius: 16px; }
   .hero .intro { flex: 1 1 200px; }
   .hero .sub { font-size: 14px; margin-top: 4px; }
-  .hero nav a { font-size: 14px; padding: 6px 12px; }
+  .hero .store { margin-top: 10px; }
+  .hero .store img { width: 135px; height: auto; }
+  .hero nav { flex: 1 1 100%; flex-wrap: nowrap; }
+  .hero nav a { flex: 1 1 0; text-align: center; white-space: nowrap; font-size: 14px; padding: 6px 8px; }
   .features { grid-template-columns: 1fr 1fr; gap: 10px; }
   .faq-cols { grid-template-columns: 1fr; }
   .feature { padding: 12px 14px; }
@@ -253,10 +266,11 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
 
 <header class="hero">
   <div class="wrap">
-    <img src="images/app-icon.png" alt="AikaTrail app icon" width="84" height="84">
+    <img src="images/app-icon.png" alt="AikaTrail app icon" width="120" height="120">
     <div class="intro">
       <h1>AikaTrail: Time Tracker</h1>
       <p class="sub">Private, offline, and made for iPhone, iPhone Duo, and iPad.</p>
+      <a class="store" href="https://apps.apple.com/us/app/aikatrail-time-tracker/id6830088450"><img src="images/app-store-badge.svg" alt="Download on the App Store" width="150" height="50"></a>
     </div>
     <nav aria-label="On this page">
       <a href="#screenshots">Screenshots</a>
@@ -377,6 +391,10 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
         <p>In Settings, tap <strong>Export diagnostics</strong> to save a small error log. It contains error events, codes, timestamps, and the app version and build, never activity names or your history. Attach it to your report together with a short description of what happened.</p>
       </details>
         </div>
+      </div>
+      <div class="get-app">
+        <p>Ready to try AikaTrail?</p>
+        <a class="store" href="https://apps.apple.com/us/app/aikatrail-time-tracker/id6830088450"><img src="images/app-store-badge.svg" alt="Download on the App Store" width="150" height="50"></a>
       </div>
       <div class="contact" id="contact">
         <div class="contact-copy">
