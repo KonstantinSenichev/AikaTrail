@@ -237,13 +237,15 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
 @media (max-width: 600px) {
   section { padding-top: 40px; }
   .hero { padding: 24px 0 22px; }
-  .hero .wrap { gap: 14px 16px; }
-  .hero img { width: 72px; height: 72px; border-radius: 16px; }
-  .hero .intro { flex: 1 1 200px; }
-  .hero .sub { font-size: 14px; margin-top: 4px; }
-  .hero .store { margin-top: 10px; }
+  /* Phones: the icon beside the title only; subtitle, badge, and links take the full width below. */
+  .hero .wrap { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 0 16px; }
+  .hero .intro { display: contents; }
+  .hero .wrap > img { grid-area: 1 / 1; width: 72px; height: 72px; border-radius: 16px; }
+  .hero h1 { grid-area: 1 / 2; text-wrap: balance; }
+  .hero .sub { grid-column: 1 / -1; font-size: 15px; margin-top: 14px; }
+  .hero .store { grid-column: 1 / -1; justify-self: start; margin-top: 14px; }
   .hero .store img { width: 135px; height: auto; }
-  .hero nav { flex: 1 1 100%; flex-wrap: nowrap; }
+  .hero nav { grid-column: 1 / -1; flex-wrap: nowrap; margin-top: 18px; }
   .hero nav a { flex: 1 1 0; text-align: center; white-space: nowrap; font-size: 14px; padding: 6px 8px; }
   .features { grid-template-columns: 1fr 1fr; gap: 10px; }
   .faq-cols { grid-template-columns: 1fr; }
@@ -269,7 +271,7 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
     <img src="images/app-icon.png" alt="AikaTrail app icon" width="120" height="120">
     <div class="intro">
       <h1>AikaTrail: Time Tracker</h1>
-      <p class="sub">Private, offline, and made for iPhone, iPhone Duo, and iPad.</p>
+      <p class="sub">Private, offline, and made for iPhone, iPhone&nbsp;Duo, and iPad.</p>
       <a class="store" href="https://apps.apple.com/us/app/aikatrail-time-tracker/id6830088450"><img src="images/app-store-badge.svg" alt="Download on the App Store" width="150" height="50"></a>
     </div>
     <nav aria-label="On this page">
