@@ -32,6 +32,8 @@ for f in 01-today 02-recent 03-week 04-tags 05-groups 06-day 07-dark 08-export; 
   shrink ipad-pro-13 "$f.png" 1800
 done
 cp "$APP/AikaTrailWidgets/Assets.xcassets/AppIconImage.imageset/AppIconImage@3x.png" "$TMP/app-icon.png"
+# Browser tab icon with the hero icon's rounded corners.
+swift "$SITE/tools/round-icon.swift" "$TMP/app-icon.png" "$TMP/favicon.png"
 
 # Swap in the new set; renamed or dropped captures don't linger and get published.
 rm -rf "$OUT"
