@@ -37,3 +37,6 @@ cp "$APP/AikaTrailWidgets/Assets.xcassets/AppIconImage.imageset/AppIconImage@3x.
 rm -rf "$OUT"
 cp -R "$TMP" "$OUT"
 chmod -R u=rwX,go=rX "$OUT"
+
+# The README's framed copies are made from the new images.
+swift "$SITE/tools/make-readme-images.swift"

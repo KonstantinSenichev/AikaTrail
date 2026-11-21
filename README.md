@@ -1,11 +1,38 @@
-# AikaTrail website
+<p align="center">
+  <img src=".github/readme/app-icon.png" alt="AikaTrail app icon" width="120" height="120">
+</p>
 
-AikaTrail's website: the app's home page (`index.html`), with its features, screenshots, answers to common questions, and support contact, and its [privacy policy](privacy.html). GitHub Pages serves it from the root of this repository (Settings → Pages → Deploy from a branch → `main`, `/ (root)`). `.nojekyll` makes Pages publish the files as they are, with no Jekyll build. Support requests go to konsta.support@gmail.com.
+# AikaTrail: Time Tracker
 
-The site root also serves as the Support URL and `privacy.html` as the Privacy Policy URL wherever the app is distributed, such as App Store Connect, and the app should link to the privacy policy. Verify both public URLs after deployment, and keep the policy aligned with the app's data handling.
+Private, offline time tracking made for iPhone, iPhone Duo, and iPad.
 
-The screenshots in `images/` are web-sized JPEG copies (plus `thumbs/` thumbnails and `full/` full-resolution copies for the zoomed view) of the raw simulator captures in the app repository's `design/app-store/*/raw/`; the device frames are drawn by CSS. After new captures, run `tools/prepare-images.sh [path to the app repository]` (macOS, uses `sips`; the default path is `../productivity-tracker`). The device switch and captions are listed in the `SHOTS` table at the end of `index.html`.
+<a href="https://apps.apple.com/app/id6830088450"><img src="images/app-store-badge.svg" alt="Download on the App Store" width="150"></a>
 
-Preview locally: `python3 -m http.server 8765`, then open http://localhost:8765/.
+AikaTrail helps you see where your time goes without accounts, ads, or clutter. Tap an activity to start, pause for breaks, and stop when you're done. Your history stays on your device.
 
-Licensing: the pages use only the visitor's system font (nothing is embedded or downloaded), draw their own icons and device frames, and load no external scripts, styles, or fonts. Keep it that way: an icon or font from a set (for example Lucide or SF Symbols) brings that set's license terms with it.
+<p align="center">
+  <img src=".github/readme/iphone-screenshots.png" alt="AikaTrail on iPhone: the Today screen, weekly insights, time by tag, and dark mode" width="100%">
+</p>
+
+## Why AikaTrail
+
+- **Easy to use**: tap an activity and start. Pause, resume, or stop with one tap.
+- **Minimal, no bloat**: no account, no ads, no clutter. Just your time.
+- **Tags and groups**: see time by activity, by tag, or by same-name activities together.
+- **Insights**: day to all-time totals, trends, and timelines, with filters.
+- **Break reminders**: get a nudge after the worked time you set.
+- **CSV export**: export any date range for Numbers, Excel, or Google Sheets.
+- **Private by design**: fully offline. No accounts, ads, or automatic data uploads.
+- **Made for every screen**: optimized for iPhone, iPhone Duo, and iPad.
+
+## Privacy
+
+AikaTrail stores your tracking data on your device and does not send it to the developer. Read the [privacy policy](privacy.html) for details.
+
+## Support
+
+Questions, problems, or ideas: email [konsta.support@gmail.com](mailto:konsta.support@gmail.com). Please include your device model and iOS version.
+
+---
+
+iPhone and iPad are trademarks of Apple Inc. App Store is a service mark of Apple Inc.
