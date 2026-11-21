@@ -472,9 +472,20 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
     }
   }
 
+  // Shareable links: #duo or #ipad opens that set, #ipad-3 a given shot (#iphone works too).
+  // Without such a hash the page opens as usual; browsing the gallery keeps the hash current.
+  const HASH = /^#(iphone|duo|ipad)(?:-(\d+))?$/;
+  let linking = false;
+  function syncHash() {
+    if (!linking) return;
+    const h = index ? `#${key}-${index + 1}` : `#${key}`;
+    if (location.hash !== h) history.replaceState(null, "", h);
+  }
+
   function show(i) {
     const set = SHOTS[key];
     index = Math.max(0, Math.min(set.shots.length - 1, i));
+    syncHash();
     const [file, frame, title, sub] = set.shots[index];
     device.className = "device " + frame;
     shot.src = src(set, file);
@@ -551,7 +562,20 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
     show(index + d);
     if (onThumb) thumbs.children[index].focus();
   });
-  selectSet(tabs[0]);
+  // Open the set (and shot) a shared link names; the page itself stays where it is.
+  function openFromHash() {
+    const m = HASH.exec(location.hash);
+    if (!m) return false;
+    linking = false;
+    selectSet(document.getElementById("tab-" + m[1]));
+    if (m[2]) show(Number(m[2]) - 1);
+    return true;
+  }
+  if (!openFromHash()) selectSet(tabs[0]);
+  window.addEventListener("hashchange", openFromHash);
+  // Only a visitor's own gallery choices write the hash, never the initial load.
+  for (const el of [...tabs, viewer, lightbox])
+    for (const type of ["click", "keydown"]) el.addEventListener(type, () => { linking = true; }, true);
 })();
 </script>
 </body>
