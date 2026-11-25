@@ -37,4 +37,4 @@ Questions, problems, or ideas: email [konsta.support@gmail.com](mailto:konsta.su
 
 ---
 
-iPhone and iPad are trademarks of Apple Inc. App Store is a service mark of Apple Inc.
+Made in Finland. iPhone and iPad are trademarks of Apple Inc. App Store is a service mark of Apple Inc.
