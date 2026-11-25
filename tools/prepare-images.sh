@@ -9,6 +9,8 @@ set -euo pipefail
 SITE="$(cd "$(dirname "$0")/.." && pwd)"
 APP="$(cd "${1:-$SITE/../productivity-tracker}" && pwd)"
 OUT="$SITE/images"
+# A run stopped mid-swap leaves only images.old: put it back first.
+[[ -d "$OUT" || ! -d "$OUT.old" ]] || mv "$OUT.old" "$OUT"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/full" "$TMP/thumbs"
