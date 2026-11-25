@@ -7,266 +7,23 @@
 <meta name="description" content="AikaTrail, a simple, private time tracker for iPhone and iPad: features, answers to common questions, and how to get help.">
 <link rel="icon" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/app-icon.png">
-<style>
-:root {
-  --vh: 100vh;
-  --bg: #f4f7f1;
-  --surface: #ffffff;
-  --mint: #e6f4dc;
-  --text: #16302a;
-  --muted: #4b625a;
-  --accent: #2f5a4b;
-  --accent-text: #ffffff;
-  --line: rgba(22, 48, 42, .12);
-  --hero-1: #1d352f;
-  --hero-2: #2f5a4b;
-  --radius: 20px;
-  color-scheme: light dark;
-}
-/* The visible viewport height: on iOS Safari 100vh also covers the area behind the toolbars. */
-@supports (height: 100dvh) { :root { --vh: 100dvh; } }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0e1a17;
-    --surface: #16251f;
-    --mint: #1b2f28;
-    --text: #e6f0e9;
-    --muted: #a7bbb2;
-    --accent: #9fd8b4;
-    --accent-text: #0e1a17;
-    --line: rgba(230, 240, 233, .12);
-    --hero-1: #12231e;
-    --hero-2: #224237;
-  }
-}
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  /* The visitor's own system font only: no font is named, embedded, or downloaded. */
-  font: 17px/1.55 system-ui, -apple-system, sans-serif;
-}
-a { color: var(--accent); }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-h1, h2, h3 { line-height: 1.15; letter-spacing: -.02em; margin: 0; }
-h2 { font-size: clamp(26px, 3.5vw, 34px); margin-bottom: 8px; }
-section { padding: 48px 0 0; }
-
-/* Hero: icon beside the name, one line of intro, small section links. */
-.hero {
-  background: linear-gradient(168deg, var(--hero-1), var(--hero-2));
-  color: #fff;
-  padding: 36px 0 32px;
-}
-.hero .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.hero img { width: 120px; height: 120px; border-radius: 27px; box-shadow: 0 10px 28px rgba(0,0,0,.3); flex: none; }
-.hero .intro { flex: 1 1 360px; min-width: 0; }
-.hero h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; margin: 0; }
-.hero .sub { color: rgba(255,255,255,.78); margin: 6px 0 0; font-size: 16px; max-width: 600px; }
-.hero .store { display: inline-block; margin-top: 14px; border-radius: 10px; }
-.hero .store img { display: block; width: 150px; height: auto; border-radius: 0; box-shadow: none; }
-.hero .store:focus-visible { outline: 3px solid #9fd8b4; outline-offset: 3px; }
-.hero nav { display: flex; gap: 8px; flex-wrap: wrap; }
-.hero nav a {
-  color: #fff; text-decoration: none; font-weight: 600; font-size: 15px;
-  padding: 8px 16px; border-radius: 999px;
-  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
-}
-.hero nav a:hover { background: rgba(255,255,255,.22); }
-
-/* Strengths: compact cards, icon beside the heading. */
-.features { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
-.feature {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
-  padding: 16px 18px;
-}
-.feature .head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-.feature .ico {
-  flex: none; width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
-  background: var(--mint); color: var(--accent);
-}
-.feature .ico svg { width: 18px; height: 18px; }
-.feature h3 { font-size: 16px; }
-.feature p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.45; }
-
-.section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
-.section-head h2 { margin: 0; }
-
-/* Device switch */
-.switch {
-  display: inline-flex; padding: 4px; border-radius: 999px;
-  background: var(--surface); border: 1px solid var(--line);
-}
-.switch button {
-  font: inherit; font-weight: 600; font-size: 15px; color: var(--text);
-  border: 0; background: transparent; padding: 9px 18px; border-radius: 999px; cursor: pointer;
-  min-height: 40px;
-}
-.switch button[aria-selected="true"] { background: var(--accent); color: var(--accent-text); }
-.switch button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-/* Gallery */
-/* Viewer: one large framed screenshot in a fixed-size stage (so switching between
-   portrait and landscape never moves the page), its caption, and a wrapping row of
-   thumbnails to pick from. */
-.viewer {
-  --bwf: min(760px, calc(100vw - 164px));
-  --bhf: min(460px, calc(var(--vh) * .56), calc(var(--bwf) * 1.6));
-  max-width: 1120px; margin: 0 auto; padding: 24px 20px 0;
-}
-.stage-row { display: flex; align-items: center; justify-content: center; gap: 20px; }
-.stage {
-  width: calc(var(--bwf) + 28px); height: calc(var(--bhf) + 28px);
-  display: flex; align-items: center; justify-content: center;
-}
-.nav {
-  flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line);
-  background: var(--surface); color: var(--text); font-size: 22px; line-height: 1; cursor: pointer;
-}
-.nav:disabled { opacity: .35; cursor: default; }
-.nav:focus-visible, .thumb:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.caption { text-align: center; margin: 18px auto 0; max-width: 520px; min-height: 72px; }
-.caption strong { display: block; font-size: 20px; letter-spacing: -.01em; }
-.caption span { display: block; color: var(--muted); font-size: 16px; }
-.caption .count { font-size: 14px; margin-top: 4px; }
-.zoom { padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 24px; }
-.zoom .device { display: block; }
-.zoom:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
-
-/* Zoomed view: the framed screenshot as large as the window allows. */
-.lightbox {
-  width: 100vw; height: var(--vh); max-width: none; max-height: none; margin: 0; padding: 56px 64px 24px;
-  border: 0; background: rgba(8, 14, 12, .97); color: #fff;
-  flex-direction: column; align-items: center; justify-content: center; gap: 14px;
-}
-.lightbox[open] { display: flex; }
-html:has(.lightbox[open]) { overflow: hidden; }
-.lightbox::backdrop { background: transparent; }
-/* The framed device fills the space left by the buttons and caption. */
-.lightbox { --bwf: calc(100vw - 168px); --bhf: calc(var(--vh) - 150px); }
-.lightbox .device { cursor: zoom-out; flex: none; }
-.lb-caption { margin: 0; text-align: center; font-weight: 600; }
-.lb-btn {
-  position: absolute; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
-  border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.12); color: #fff; font-size: 22px; line-height: 1;
-}
-.lb-btn:hover { background: rgba(255,255,255,.22); }
-.lb-btn:disabled { opacity: .3; cursor: default; }
-.lb-btn:focus-visible { outline: 3px solid #9fd8b4; outline-offset: 2px; }
-.lb-close { top: 12px; right: 12px; font-size: 18px; }
-.lb-prev { left: 12px; top: 50%; transform: translateY(-50%); }
-.lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
-
-.thumbs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
-.thumb {
-  padding: 4px; border: 2px solid transparent; border-radius: 12px; background: none; cursor: pointer;
-  opacity: .7;
-}
-.thumb:hover { opacity: 1; }
-.thumb[aria-current="true"] { border-color: var(--accent); opacity: 1; }
-.thumb img { display: block; height: 56px; width: auto; border-radius: 6px; background: var(--line); }
-.viewer[data-set="iphone"] .thumb img { height: 76px; }
-
-/* Device frames (drawn around the raw simulator captures). --a is width / height,
-   --r the screen corner radius as a share of the width, --b the bezel. */
-.device {
-  --a: .46; --r: .12; --b: 10px;
-  --sw: min(var(--bwf), calc(var(--bhf) * var(--a)));
-  padding: var(--b); background: #0b0b0c;
-  border-radius: calc(var(--sw) * var(--r) + var(--b));
-  box-shadow: 0 0 0 2px #8d8f8c, 0 0 0 3.5px #3b3d3b, 0 24px 48px rgba(0,0,0,.26), 0 8px 16px rgba(0,0,0,.16);
-}
-.device img {
-  display: block; width: var(--sw); height: auto; aspect-ratio: var(--a);
-  border-radius: calc(var(--sw) * var(--r)); background: #000;
-}
-.phone { --a: .46; --r: .125; --b: 9px; }
-.duo-folded { --a: .687; --r: .08; --b: 9px; }
-.duo-portrait { --a: .703; --r: .05; --b: 10px; }
-.duo-landscape { --a: 1.42; --r: .036; --b: 10px; }
-.ipad-portrait { --a: .75; --r: .045; --b: 13px; }
-.ipad-landscape { --a: 1.333; --r: .034; --b: 13px; }
-
-/* FAQ */
-.faq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; align-items: start; margin-top: 16px; }
-details {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-  margin-bottom: 10px;
-}
-/* A custom summary: the question on the leading side, a chevron on the trailing side
-   that turns down when open (the default triangle marker is hidden). */
-summary {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 14px 18px; cursor: pointer; list-style: none;
-  font-weight: 600; font-size: 16px; line-height: 1.35;
-}
-summary::-webkit-details-marker { display: none; }
-summary::after {
-  content: ""; flex: none; width: 8px; height: 8px; margin-inline-end: 4px;
-  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
-  transform: rotate(-45deg); transition: transform .15s ease;
-}
-details[open] > summary::after { transform: rotate(45deg); }
-summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 14px; }
-details p { margin: 0; padding: 0 18px 16px; color: var(--muted); font-size: 15px; }
-
-/* Second App Store badge, for visitors who scrolled through the page. */
-.get-app { display: flex; align-items: center; justify-content: center; gap: 12px 20px; flex-wrap: wrap; margin-top: 22px; }
-.get-app p { margin: 0; font-weight: 600; font-size: 18px; }
-.get-app .store { display: block; border-radius: 10px; }
-.get-app .store img { display: block; width: 150px; height: auto; }
-.get-app .store:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-
-/* Contact */
-.contact {
-  background: var(--mint); border-radius: 16px; padding: 16px 20px; margin-top: 14px;
-  display: flex; gap: 16px 24px; align-items: center; flex-wrap: wrap;
-  scroll-margin-top: 24px;
-}
-.contact-copy { flex: 1 1 28rem; min-width: 0; }
-.contact h3 { font-size: 18px; margin-bottom: 6px; }
-.contact p { margin: 0; color: var(--muted); font-size: 15px; overflow-wrap: anywhere; }
-.contact p + p { margin-top: 4px; }
-.button {
-  display: inline-block; background: var(--accent); color: var(--accent-text);
-  text-decoration: none; font-weight: 600; padding: 12px 22px; border-radius: 999px;
-}
-footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align: center; }
-@media (max-width: 600px) {
-  section { padding-top: 40px; }
-  .hero { padding: 24px 0 22px; }
-  /* Phones: the icon beside the title only; subtitle, badge, and links take the full width below. */
-  .hero .wrap { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 0 16px; }
-  .hero .intro { display: contents; }
-  .hero .wrap > img { grid-area: 1 / 1; width: 72px; height: 72px; border-radius: 16px; }
-  .hero h1 { grid-area: 1 / 2; text-wrap: balance; }
-  .hero .sub { grid-column: 1 / -1; font-size: 15px; margin-top: 14px; }
-  .hero .store { grid-column: 1 / -1; justify-self: start; margin-top: 14px; }
-  .hero .store img { width: 135px; height: auto; }
-  .hero nav { grid-column: 1 / -1; flex-wrap: nowrap; margin-top: 18px; }
-  .hero nav a { flex: 1 1 0; text-align: center; white-space: nowrap; font-size: 14px; padding: 6px 8px; }
-  .features { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .faq-cols { grid-template-columns: 1fr; }
-  .feature { padding: 12px 14px; }
-  .feature .head { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .feature p { font-size: 14px; }
-  .switch { display: flex; width: 100%; }
-  .switch button { flex: 1 1 0; padding: 9px 8px; white-space: nowrap; }
-  .viewer { --bwf: calc(100vw - 72px); padding-top: 28px; }
-  /* A shorter stage for sets that mix orientations, so landscape shots don't float in empty space. */
-  .viewer[data-set="duo"], .viewer[data-set="ipad"] { --bhf: min(calc(var(--vh) * .64), calc(var(--bwf) * 1.1)); }
-  .nav { display: none; }
-  .lightbox { padding: 60px 12px 20px; --bwf: calc(100vw - 52px); --bhf: calc(var(--vh) - 190px); }
-  .lb-prev, .lb-next { top: auto; bottom: 12px; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) { summary::after { transition: none; } }
-</style>
+<link rel="alternate" hreflang="en" href="https://konstantinsenichev.github.io/AikaTrail/">
+<link rel="alternate" hreflang="fi" href="https://konstantinsenichev.github.io/AikaTrail/fi/">
+<link rel="alternate" hreflang="x-default" href="https://konstantinsenichev.github.io/AikaTrail/">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
 <header class="hero">
+  <div class="wrap topbar">
+    <details class="lang">
+      <summary aria-label="Language: English"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span>English</span></summary>
+      <ul>
+        <li><a href="./" hreflang="en" lang="en" aria-current="page">English</a></li>
+        <li><a href="fi/" hreflang="fi" lang="fi">Suomi</a></li>
+      </ul>
+    </details>
+  </div>
   <div class="wrap">
     <img src="images/app-icon.png" alt="AikaTrail app icon" width="120" height="120">
     <div class="intro">
@@ -274,7 +31,7 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
       <p class="sub">Private, offline, and made for iPhone, iPhone&nbsp;Duo, and iPad.</p>
       <a class="store" href="https://apps.apple.com/app/id6830088450"><img src="images/app-store-badge.svg" alt="Download on the App Store" width="150" height="50"></a>
     </div>
-    <nav aria-label="On this page">
+    <nav class="sections" aria-label="On this page">
       <a href="#screenshots">Screenshots</a>
       <a href="#faq">Questions</a>
       <a href="#contact">Get help</a>
@@ -419,10 +176,17 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
 </footer>
 
 <script>
-// Icons, device frames, and layout are original to this page; it loads no external fonts, scripts, or styles.
-(() => {
-  // Each shot: [image name, frame class, title, subtitle]. Images come from tools/prepare-images.sh.
-  const SHOTS = {
+// The gallery's screenshots and texts. Each shot: [image name, frame class, title, subtitle].
+// Images come from tools/prepare-images.sh.
+window.GALLERY = {
+  base: "images",
+  text: {
+    alt: (device, title, sub) => `AikaTrail on ${device}: ${title} ${sub}`,
+    zoom: alt => `Zoom: ${alt}`,
+    count: (n, total) => `${n} of ${total}`,
+    thumb: (n, title) => `Show screenshot ${n}: ${title}`,
+  },
+  sets: {
     iphone: { dir: "iphone-18-pro-max", label: "iPhone", shots: [
       ["01-today", "phone", "Time tracking, kept simple.", "Pick an activity. Start your session."],
       ["02-recent", "phone", "See what you did today.", "Review your recent sessions at a glance."],
@@ -453,130 +217,9 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
       ["07-dark", "ipad-landscape", "Your time stays private.", "Fully offline. Stored on your device."],
       ["08-export", "ipad-portrait", "Take your data with you.", "Export your sessions and tags as CSV."],
     ]},
-  };
-
-  const viewer = document.getElementById("viewer");
-  const device = document.getElementById("device");
-  const shot = document.getElementById("shot");
-  const thumbs = document.getElementById("thumbs");
-  const prev = document.getElementById("prev");
-  const next = document.getElementById("next");
-  const tabs = [...document.querySelectorAll('[role="tab"]')];
-  let key = "iphone", index = 0;
-  const src = (set, file, dir = "images") => `${dir}/${set.dir}-${file}.jpg`;
-  // Disable a step button at either end; if it had focus, hand focus to its partner so it isn't lost.
-  function setEnds(back, forward, i, count) {
-    for (const [b, off, other] of [[back, i === 0, forward], [forward, i === count - 1, back]]) {
-      if (off && document.activeElement === b) other.focus();
-      b.disabled = off;
-    }
-  }
-
-  // Shareable links: #duo or #ipad opens that set, #ipad-3 a given shot (#iphone works too).
-  // Without such a hash the page opens as usual; browsing the gallery keeps the hash current.
-  const HASH = /^#(iphone|duo|ipad)(?:-(\d+))?$/;
-  let linking = false;
-  function syncHash() {
-    if (!linking) return;
-    const h = index ? `#${key}-${index + 1}` : `#${key}`;
-    if (location.hash !== h) history.replaceState(null, "", h);
-  }
-
-  function show(i) {
-    const set = SHOTS[key];
-    index = Math.max(0, Math.min(set.shots.length - 1, i));
-    syncHash();
-    const [file, frame, title, sub] = set.shots[index];
-    device.className = "device " + frame;
-    shot.src = src(set, file);
-    shot.alt = `AikaTrail on ${set.label}: ${title} ${sub}`;
-    document.getElementById("zoom").setAttribute("aria-label", `Zoom: ${shot.alt}`);
-    document.getElementById("cap-title").textContent = title;
-    document.getElementById("cap-sub").textContent = sub;
-    document.getElementById("cap-count").textContent = `${index + 1} of ${set.shots.length}`;
-    [...thumbs.children].forEach((t, j) => t.setAttribute("aria-current", j === index));
-    setEnds(prev, next, index, set.shots.length);
-    // Warm the neighbors so stepping feels instant.
-    for (const j of [index - 1, index + 1]) if (set.shots[j]) new Image().src = src(set, set.shots[j][0]);
-  }
-  function selectSet(tab, focus) {
-    key = tab.id.slice(4);
-    for (const t of tabs) {
-      const on = t === tab;
-      t.setAttribute("aria-selected", on);
-      t.tabIndex = on ? 0 : -1;
-    }
-    if (focus) tab.focus();
-    const set = SHOTS[key];
-    viewer.dataset.set = key;
-    viewer.setAttribute("aria-labelledby", tab.id);
-    thumbs.innerHTML = set.shots.map(([file, , title], j) =>
-      `<button type="button" class="thumb" aria-label="Show screenshot ${j + 1}: ${title}">` +
-      `<img src="${src(set, file, "images/thumbs")}" alt="" loading="lazy" decoding="async"></button>`).join("");
-    [...thumbs.children].forEach((b, j) => b.addEventListener("click", () => show(j)));
-    show(0);
-  }
-  tabs.forEach((tab, i) => {
-    tab.addEventListener("click", () => selectSet(tab));
-    tab.addEventListener("keydown", e => {
-      const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-      if (d) { e.preventDefault(); selectSet(tabs[(i + d + tabs.length) % tabs.length], true); }
-    });
-  });
-  // Zoom: the full-size screenshot in a modal dialog (Esc, the close button, or a click outside closes it).
-  const lightbox = document.getElementById("lightbox");
-  const lbImg = document.getElementById("lb-img");
-  let lightboxRequest = 0;
-  function syncLightbox() {
-    const request = ++lightboxRequest;
-    const set = SHOTS[key];
-    const [file, frame, title] = set.shots[index];
-    document.getElementById("lb-device").className = "device " + frame;
-    // Show the gallery image at once, then swap in the full-resolution copy when it arrives.
-    lbImg.src = src(set, file);
-    const full = src(set, file, "images/full");
-    const hi = new Image();
-    hi.onload = () => { if (lightbox.open && request === lightboxRequest) lbImg.src = full; };
-    hi.src = full;
-    lbImg.alt = shot.alt;
-    document.getElementById("lb-caption").textContent = `${title} (${index + 1} of ${set.shots.length})`;
-    setEnds(document.getElementById("lb-prev"), document.getElementById("lb-next"), index, set.shots.length);
-  }
-  document.getElementById("zoom").addEventListener("click", () => { syncLightbox(); lightbox.showModal(); });
-  document.getElementById("lb-close").addEventListener("click", () => lightbox.close());
-  document.getElementById("lb-prev").addEventListener("click", () => { show(index - 1); syncLightbox(); });
-  document.getElementById("lb-next").addEventListener("click", () => { show(index + 1); syncLightbox(); });
-  document.getElementById("lb-device").addEventListener("click", () => lightbox.close());
-  lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.close(); });
-  lightbox.addEventListener("keydown", e => {
-    if (e.key === "ArrowLeft") { show(index - 1); syncLightbox(); }
-    if (e.key === "ArrowRight") { show(index + 1); syncLightbox(); }
-  });
-
-  prev.addEventListener("click", () => show(index - 1));
-  next.addEventListener("click", () => show(index + 1));
-  viewer.addEventListener("keydown", e => {
-    const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-    if (!d) return;
-    const onThumb = thumbs.contains(document.activeElement);
-    show(index + d);
-    if (onThumb) thumbs.children[index].focus();
-  });
-  // Open the set (and shot) a shared link names; the page itself stays where it is.
-  function openFromHash() {
-    const m = HASH.exec(location.hash);
-    if (!m) return false;
-    linking = false;
-    selectSet(document.getElementById("tab-" + m[1]));
-    if (m[2]) show(Number(m[2]) - 1);
-    return true;
-  }
-  if (!openFromHash()) selectSet(tabs[0]);
-  window.addEventListener("hashchange", openFromHash);
-  // Only a visitor's own gallery choices write the hash, never the initial load.
-  for (const el of [...tabs, viewer, lightbox])
-    for (const type of ["click", "keydown"]) el.addEventListener(type, () => { linking = true; }, true);
-})();
+  },
+};
 </script>
+<script src="assets/gallery.js"></script>
 </body>
 </html>

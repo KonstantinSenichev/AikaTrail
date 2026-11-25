@@ -10,6 +10,8 @@ Private, offline time tracking made for iPhone, iPhone Duo, and iPad.
 
 AikaTrail helps you see where your time goes without accounts, ads, or clutter. Tap an activity to start, pause for breaks, and stop when you're done. Your history stays on your device.
 
+The app and its [website](https://konstantinsenichev.github.io/AikaTrail/) are available in English and Finnish ([suomeksi](https://konstantinsenichev.github.io/AikaTrail/fi/)).
+
 <p align="center">
   <img src=".github/readme/iphone-screenshots.png" alt="AikaTrail on iPhone: the Today screen, weekly insights, time by tag, and dark mode" width="100%">
 </p>

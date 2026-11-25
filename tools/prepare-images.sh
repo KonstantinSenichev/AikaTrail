@@ -2,7 +2,7 @@
 # Makes the site's web-sized screenshots from the raw App Store captures in the app repository.
 # The Lock Screen shots (reminder, Live Activity) are left out: they show Apple's wallpaper.
 # Usage: tools/prepare-images.sh [path to the app repository] (from anywhere; the default is
-# ../productivity-tracker next to this repository). Frames are drawn by CSS in index.html.
+# ../productivity-tracker next to this repository). Frames are drawn by CSS in assets/site.css.
 # Everything is built in a temporary folder first and replaces images/ only when every
 # step succeeded, so a missing capture leaves the published images untouched.
 set -euo pipefail
@@ -23,22 +23,28 @@ shrink() { # device raw-file longest-edge
   # Thumbnail for the picker under the large screenshot.
   sips -Z 360 "$TMP/$name" --out "$TMP/thumbs/$name" >/dev/null
 }
-for f in 01-today 02-recent 03-week 04-tags 05-groups 06-day 07-dark 08-export; do
-  shrink iphone-18-pro-max "$f.png" 1400
-done
-for f in 01-today 02-recent; do shrink iphone-duo "$f.png" 1400; done
-for f in 03-week 04-tags 05-groups 06-day 07-dark 08-export; do shrink iphone-duo "$f.png" 1800; done
-for f in 01-today 02-recent 03-week 04-tags 05-groups 06-day 07-dark 08-export; do
-  shrink ipad-pro-13 "$f.png" 1800
+SHOTS="01-today 02-recent 03-week 04-tags 05-groups 06-day 07-dark 08-export"
+# The English sets for index.html, the Finnish (-fi) sets for fi/index.html.
+for lang in "" -fi; do
+  for f in $SHOTS; do shrink "iphone-18-pro-max$lang" "$f.png" 1400; done
+  for f in 01-today 02-recent; do shrink "iphone-duo$lang" "$f.png" 1400; done
+  for f in 03-week 04-tags 05-groups 06-day 07-dark 08-export; do shrink "iphone-duo$lang" "$f.png" 1800; done
+  for f in $SHOTS; do shrink "ipad-pro-13$lang" "$f.png" 1800; done
 done
 cp "$APP/AikaTrailWidgets/Assets.xcassets/AppIconImage.imageset/AppIconImage@3x.png" "$TMP/app-icon.png"
 # Browser tab icon with the hero icon's rounded corners.
 swift "$SITE/tools/round-icon.swift" "$TMP/app-icon.png" "$TMP/favicon.png"
 
-# Swap in the new set; renamed or dropped captures don't linger and get published.
-rm -rf "$OUT"
-cp -R "$TMP" "$OUT"
-chmod -R u=rwX,go=rX "$OUT"
+# The App Store badges (one per language) are not made here: carry them over.
+cp "$OUT"/app-store-badge*.svg "$TMP/"
+# Swap in the new set; renamed or dropped captures don't linger and get published. The copy goes
+# next to images/ first, so a failed copy leaves the published images (and badges) untouched.
+rm -rf "$OUT.new" "$OUT.old"
+cp -R "$TMP" "$OUT.new"
+chmod -R u=rwX,go=rX "$OUT.new"
+mv "$OUT" "$OUT.old"
+mv "$OUT.new" "$OUT"
+rm -rf "$OUT.old"
 
 # The README's framed copies are made from the new images.
 swift "$SITE/tools/make-readme-images.swift"

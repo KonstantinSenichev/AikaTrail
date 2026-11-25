@@ -1,5 +1,5 @@
 // Makes the README's images, which GitHub shows without the site's CSS: the app icon with
-// rounded corners, and a strip of iPhone screenshots in the same device frames index.html draws.
+// rounded corners, and a strip of iPhone screenshots in the same device frames as the site (assets/site.css).
 // Usage (macOS): swift tools/make-readme-images.swift (from anywhere). Reads images/,
 // writes .github/readme/. Run it after tools/prepare-images.sh.
 import AppKit
@@ -56,7 +56,7 @@ do {
     save(ctx, "app-icon.png")
 }
 
-// Screenshot strip: the .phone frame from index.html (screen radius .125 of the width,
+// Screenshot strip: the .phone frame from assets/site.css (screen radius .125 of the width,
 // a black bezel, a light and a dark ring, and a soft shadow), scaled to a 400 px screen.
 do {
     let shots = ["01-today", "03-week", "04-tags", "07-dark"].map {
