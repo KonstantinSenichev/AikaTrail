@@ -130,6 +130,8 @@
     // If anything else (keys, buttons, a link) changes the shot mid-drag, the drag is dropped
     // rather than applied to the new one, even if the visitor comes back to the same shot.
     let id = null, x0 = 0, y0 = 0, dx = 0, sideways = null, dropped = false, swallowUntil = -1;
+    let stepping = false; // true while the swipe's own step runs
+    const ghosts = new Set(); // copies of old frames still sliding out
     const can = d => index + d >= 0 && index + d < SHOTS[key].shots.length;
     // At either end the shot resists, so the visitor sees there is nothing further.
     const offset = mx => can(mx < 0 ? 1 : -1) ? mx : mx / 4;
@@ -141,6 +143,34 @@
         [{ transform: `translateX(${from}px)`, opacity: Math.abs(from) > 30 ? .4 : 1 }, { transform: "none", opacity: 1 }],
         { duration: 220, easing: "ease-out" });
     };
+    // A swipe past the threshold steps at once, so the caption, link, and full-screen view are
+    // never behind. A copy of the old frame carries on the way the finger moved and fades out,
+    // while the new shot slides in from the other side.
+    function turn(d) {
+      linking = true;
+      // Place the copy within the frame's parent (positioned in CSS), so it scrolls and zooms with it.
+      const from = dx, parent = target.parentNode, r = target.getBoundingClientRect(), p = parent.getBoundingClientRect();
+      const ghost = still.matches ? null : target.cloneNode(true);
+      stop();
+      target.style.transform = "";
+      stepping = true;
+      try { step(d); } finally { stepping = false; }
+      if (!ghost) return;
+      for (const el of [ghost, ...ghost.querySelectorAll("[id]")]) el.removeAttribute("id");
+      ghost.setAttribute("aria-hidden", "true");
+      ghost.style.cssText = `position: absolute; left: ${r.left - p.left - parent.clientLeft - from}px; ` +
+        `top: ${r.top - p.top - parent.clientTop}px; margin: 0; pointer-events: none;`;
+      parent.append(ghost);
+      ghosts.add(ghost);
+      const w = Math.min(target.offsetWidth * .6, 220);
+      ghost.animate(
+        [{ transform: `translateX(${from}px)`, opacity: 1 }, { transform: `translateX(${from - d * w}px)`, opacity: 0 }],
+        { duration: 200, easing: "ease-in", fill: "forwards" }
+      ).finished.finally(() => { ghost.remove(); ghosts.delete(ghost); }).catch(() => {});
+      target.animate(
+        [{ transform: `translateX(${d * w}px)`, opacity: 0 }, { transform: "none", opacity: 1 }],
+        { duration: 280, delay: 90, easing: "cubic-bezier(.2, .8, .2, 1)", fill: "backwards" });
+    }
     area.addEventListener("pointerdown", e => {
       swallowUntil = -1; // a new press is a new gesture, whatever the input
       if (e.pointerType === "mouse" || id !== null) return;
@@ -171,14 +201,18 @@
       // Judge by where the finger lifted, not the last move.
       dx = offset(e.clientX - x0);
       const d = dx < 0 ? 1 : -1;
-      if (!dropped && Math.abs(dx) > 50 && can(d)) {
-        linking = true;
-        step(d);
-        settle(d * 40); // the new shot arrives from the side the finger moved away from
-      } else settle(dropped ? 0 : dx);
+      if (!dropped && Math.abs(dx) > 50 && can(d)) turn(d);
+      else settle(dropped ? 0 : dx);
     };
-    // The swipe's own step runs after `id` is cleared, so it never drops itself.
-    shotChanged.push(() => { if (id !== null && !dropped) { dropped = true; settle(0); } });
+    // Any other change of shot (keys, buttons, a link) drops a drag in progress and ends a
+    // swipe's slide at once, so the new shot shows plainly. The swipe's own step is exempt.
+    shotChanged.push(() => {
+      if (stepping) return;
+      if (id !== null && !dropped) dropped = true;
+      for (const g of ghosts) g.remove();
+      ghosts.clear();
+      settle(0);
+    });
     area.addEventListener("pointerup", end);
     area.addEventListener("pointercancel", end);
     // A swipe is not a tap: don't let it open (or close) the full-screen view. Keyboard clicks
