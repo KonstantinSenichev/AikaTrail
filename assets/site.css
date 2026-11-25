@@ -44,32 +44,44 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -.02em; margin: 0; }
 h2 { font-size: clamp(26px, 3.5vw, 34px); margin-bottom: 8px; }
 section { padding: 48px 0 0; }
 
-/* Hero: icon beside the name, one line of intro, small section links. */
+/* Hero: a top bar (section links and language menu), then the icon beside the name and a
+   phone that rises from the bottom edge. */
 .hero {
   background: linear-gradient(168deg, var(--hero-1), var(--hero-2));
   color: #fff;
-  padding: 18px 0 32px;
+  padding: 16px 0 36px;
+  overflow: hidden;
 }
-.hero .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.hero img { width: 120px; height: 120px; border-radius: 27px; box-shadow: 0 10px 28px rgba(0,0,0,.3); flex: none; }
+.hero .hero-main { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.hero .app-icon { width: 120px; height: 120px; border-radius: 27px; box-shadow: 0 10px 28px rgba(0,0,0,.3); flex: none; }
 .hero .intro { flex: 1 1 360px; min-width: 0; }
-.hero h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; margin: 0; }
-.hero .sub { color: rgba(255,255,255,.78); margin: 6px 0 0; font-size: 16px; max-width: 600px; }
-.hero .store { display: inline-block; margin-top: 14px; border-radius: 10px; }
+.hero h1 { font-size: clamp(30px, 4.4vw, 40px); font-weight: 800; margin: 0; }
+.hero .sub { color: rgba(255,255,255,.86); margin: 8px 0 0; font-size: 17px; max-width: 600px; }
+.hero .store { display: inline-block; margin-top: 18px; border-radius: 10px; }
 /* Badges are sized by height: Apple's localized badges differ in width but share a height. */
-.hero .store img { display: block; width: auto; height: 50px; border-radius: 0; box-shadow: none; }
+.hero .store img { display: block; width: auto; height: 50px; }
 .hero .store:focus-visible { outline: 3px solid #9fd8b4; outline-offset: 3px; }
-.hero .sections { display: flex; gap: 8px; flex-wrap: wrap; }
+/* Section links: quiet text links, so the App Store badge stays the one strong action. */
+.hero .sections { display: flex; gap: 4px; flex-wrap: wrap; }
 .hero .sections a {
-  color: #fff; text-decoration: none; font-weight: 600; font-size: 15px;
-  padding: 8px 16px; border-radius: 999px;
-  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.86); text-decoration: none; font-weight: 600; font-size: 15px;
+  padding: 7px 12px; border-radius: 999px;
 }
-.hero .sections a:hover { background: rgba(255,255,255,.22); }
+.hero .sections a:hover { color: #fff; background: rgba(255,255,255,.12); }
+.hero .sections a:focus-visible { outline: 3px solid #9fd8b4; outline-offset: 0; }
+/* A decorative phone, cut off by the hero's bottom edge. Wide screens only. */
+.hero .hero-shot {
+  --bwf: 220px; --bhf: 480px;
+  flex: none; align-self: flex-end; height: 250px; margin: 8px 24px -36px auto;
+  transform: rotate(4deg); transform-origin: bottom center;
+}
+/* The frame is an inline <span>; as a block it wraps the screenshot in one piece. */
+.hero .hero-shot .device { display: block; }
+@media (max-width: 860px) { .hero .hero-shot { display: none; } }
 
 /* Language menu: a small dropdown above the hero content (a <details> disclosure, so it works
    without scripts). Each option links to that language's page and is named in its own language. */
-.hero .wrap.topbar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+.hero .topbar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 20px; }
 .lang { position: relative; background: none; border: 0; border-radius: 0; margin: 0; }
 .lang summary {
   display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px;
@@ -266,18 +278,18 @@ details p { margin: 0; padding: 0 18px 16px; color: var(--muted); font-size: 15p
 footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align: center; }
 @media (max-width: 600px) {
   section { padding-top: 40px; }
-  .hero { padding: 14px 0 22px; }
-  .hero .wrap.topbar { margin-bottom: 10px; }
-  /* Phones: the icon beside the title only; subtitle, badge, and links take the full width below. */
-  .hero .wrap { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 0 16px; }
+  .hero { padding: 12px 0 24px; }
+  .hero .topbar { justify-content: space-between; margin-bottom: 16px; }
+  .hero .sections { flex-wrap: nowrap; gap: 0; margin-left: -10px; }
+  .hero .sections a { white-space: nowrap; font-size: 14px; padding: 7px 10px; }
+  /* Phones: the icon beside the title only; subtitle and badge take the full width below. */
+  .hero .hero-main { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 0 16px; }
   .hero .intro { display: contents; }
-  .hero .wrap > img { grid-area: 1 / 1; width: 72px; height: 72px; border-radius: 16px; }
+  .hero .app-icon { grid-area: 1 / 1; width: 72px; height: 72px; border-radius: 16px; }
   .hero h1 { grid-area: 1 / 2; text-wrap: balance; }
   .hero .sub { grid-column: 1 / -1; font-size: 15px; margin-top: 14px; }
   .hero .store { grid-column: 1 / -1; justify-self: start; margin-top: 14px; }
   .hero .store img { width: auto; height: 45px; }
-  .hero .sections { grid-column: 1 / -1; flex-wrap: nowrap; margin-top: 18px; }
-  .hero .sections a { flex: 1 1 0; text-align: center; white-space: nowrap; font-size: 14px; padding: 6px 8px; }
   .features { grid-template-columns: 1fr 1fr; gap: 10px; }
   .faq-cols { grid-template-columns: 1fr; }
   .feature { padding: 12px 14px; }
@@ -293,7 +305,13 @@ footer { padding: 32px 0 28px; color: var(--muted); font-size: 14px; text-align:
   .lb-prev, .lb-next { top: auto; bottom: 12px; transform: none; }
 }
 /* The narrowest phones: one feature card per row, so long words (often in Finnish) fit. */
+@media (max-width: 420px) {
+  .lang summary { padding: 6px 12px 6px 10px; }
+  .lang summary span { display: none; }
+}
 @media (max-width: 360px) {
+  .hero .sections a { font-size: 13px; padding: 7px 6px; }
+  .hero .sections { margin-left: -6px; }
   .features { grid-template-columns: 1fr; }
   .feature .head { flex-direction: row; align-items: center; }
 }
