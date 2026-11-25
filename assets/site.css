@@ -188,6 +188,9 @@ html:has(.lightbox[open]) { overflow: hidden; }
 .lightbox::backdrop { background: transparent; }
 /* The framed device fills the space left by the buttons and caption. */
 .lightbox { --bwf: calc(100vw - 168px); --bhf: calc(var(--vh) - 150px); }
+/* Sideways drags belong to the gallery's swipe; vertical scrolling and pinch zoom stay with the browser. */
+.stage, .lightbox { touch-action: pan-y pinch-zoom; }
+.stage img, .lightbox img { -webkit-user-drag: none; user-select: none; }
 .lightbox .device { cursor: zoom-out; flex: none; }
 .lb-caption { margin: 0; text-align: center; font-weight: 600; }
 .lb-btn {

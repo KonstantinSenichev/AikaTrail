@@ -43,7 +43,9 @@
     for (const a of document.querySelectorAll('.lang a:not([aria-current])')) a.hash = languageHash();
   }
 
+  const shotChanged = []; // callbacks run whenever the shown shot changes
   function show(i) {
+    for (const f of shotChanged) f();
     const set = SHOTS[key];
     index = Math.max(0, Math.min(set.shots.length - 1, i));
     syncHash();
@@ -121,6 +123,75 @@
     if (e.key === "ArrowRight") { show(index + 1); syncLightbox(); }
   });
 
+  // Swipe (touch and pen): a sideways drag on `area` moves `target` with the finger, and a long
+  // enough one steps to the neighbor. Vertical drags stay page scrolls (touch-action: pan-y in CSS).
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  function swipe(area, target, step) {
+    // If anything else (keys, buttons, a link) changes the shot mid-drag, the drag is dropped
+    // rather than applied to the new one, even if the visitor comes back to the same shot.
+    let id = null, x0 = 0, y0 = 0, dx = 0, sideways = null, dropped = false, swallowUntil = -1;
+    const can = d => index + d >= 0 && index + d < SHOTS[key].shots.length;
+    // At either end the shot resists, so the visitor sees there is nothing further.
+    const offset = mx => can(mx < 0 ? 1 : -1) ? mx : mx / 4;
+    const stop = () => { for (const a of target.getAnimations()) a.cancel(); };
+    const settle = from => {
+      stop();
+      target.style.transform = "";
+      if (!still.matches && from) target.animate(
+        [{ transform: `translateX(${from}px)`, opacity: Math.abs(from) > 30 ? .4 : 1 }, { transform: "none", opacity: 1 }],
+        { duration: 220, easing: "ease-out" });
+    };
+    area.addEventListener("pointerdown", e => {
+      swallowUntil = -1; // a new press is a new gesture, whatever the input
+      if (e.pointerType === "mouse" || id !== null) return;
+      stop();
+      id = e.pointerId; x0 = e.clientX; y0 = e.clientY; dx = 0; sideways = null; dropped = false;
+    });
+    area.addEventListener("pointermove", e => {
+      if (e.pointerId !== id || sideways === false) return;
+      const mx = e.clientX - x0, my = e.clientY - y0;
+      if (sideways === null) {
+        if (Math.hypot(mx, my) <= 8) return;
+        sideways = Math.abs(mx) > Math.abs(my);
+        if (!sideways) return;
+        // Keep the release coming here even if a pen leaves the area.
+        try { area.setPointerCapture(id); } catch {}
+      }
+      if (dropped) return;
+      dx = offset(mx);
+      target.style.transform = `translateX(${dx}px)`;
+    });
+    const end = e => {
+      if (e.pointerId !== id) return;
+      id = null;
+      if (!sideways) return;
+      if (e.type === "pointercancel") return settle(dx);
+      // The browser may follow a swipe with a click; swallow that one click only.
+      swallowUntil = e.timeStamp + 500;
+      // Judge by where the finger lifted, not the last move.
+      dx = offset(e.clientX - x0);
+      const d = dx < 0 ? 1 : -1;
+      if (!dropped && Math.abs(dx) > 50 && can(d)) {
+        linking = true;
+        step(d);
+        settle(d * 40); // the new shot arrives from the side the finger moved away from
+      } else settle(dropped ? 0 : dx);
+    };
+    // The swipe's own step runs after `id` is cleared, so it never drops itself.
+    shotChanged.push(() => { if (id !== null && !dropped) { dropped = true; settle(0); } });
+    area.addEventListener("pointerup", end);
+    area.addEventListener("pointercancel", end);
+    // A swipe is not a tap: don't let it open (or close) the full-screen view. Keyboard clicks
+    // (detail 0) always go through.
+    area.addEventListener("click", e => {
+      if (e.detail === 0 || e.timeStamp > swallowUntil) return;
+      swallowUntil = -1;
+      e.stopPropagation(); e.preventDefault();
+    }, true);
+  }
+  swipe(document.querySelector(".stage"), device, d => show(index + d));
+  swipe(lightbox, document.getElementById("lb-device"), d => { show(index + d); syncLightbox(); });
+
   prev.addEventListener("click", () => show(index - 1));
   next.addEventListener("click", () => show(index + 1));
   viewer.addEventListener("keydown", e => {
@@ -139,6 +210,7 @@
     linking = false;
     selectSet(document.getElementById("tab-" + m[1]));
     if (m[2]) show(Number(m[2]) - 1);
+    if (lightbox.open) syncLightbox();
     return true;
   }
   if (!openFromHash()) selectSet(tabs[0]);
